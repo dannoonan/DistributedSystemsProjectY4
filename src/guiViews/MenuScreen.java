@@ -6,6 +6,8 @@
 package guiViews;
 
 import daos.GameDao;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,14 +16,39 @@ import daos.GameDao;
 public class MenuScreen extends javax.swing.JFrame {
 
     GameDao gameDao;
+    static int userId;
     /**
      * Creates new form MenuScreen
      */
-    public MenuScreen() {
+    public MenuScreen(int userId) {
+        this.userId = userId;
         gameDao = new GameDao();
         initComponents();
+        displayGames();
     }
-
+    
+    public void displayGames(){
+        DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
+        model.setRowCount(0);
+        String games = gameDao.getGames();
+        String [] gamesArr = games.split("\\s*\n\\s*");
+        String [] gameDetails;
+        
+        for(int i=0; i<gamesArr.length; i++){
+            Vector row = new Vector();
+            
+            gameDetails = gamesArr[i].split("\\s*,\\s*");
+             for(int j=0; j<gameDetails.length; j++){
+                 
+                 row.add(gameDetails[j]);
+             }
+             model.addRow(row);
+        }
+       
+       
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,10 +60,12 @@ public class MenuScreen extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        newGameBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        gameTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        joinBtn = new javax.swing.JButton();
+        warnLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,54 +73,64 @@ public class MenuScreen extends javax.swing.JFrame {
 
         jButton2.setText("Records");
 
-        jButton3.setText("New Game");
+        newGameBtn.setText("New Game");
+        newGameBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newGameBtnActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        gameTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
-                "GameID"
+                "GameID", "Username", "Date"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        gameTable.setColumnSelectionAllowed(true);
+        gameTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(gameTable);
+        gameTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jLabel1.setText("Games to join");
+
+        joinBtn.setText("Join Game");
+        joinBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                joinBtnActionPerformed(evt);
+            }
+        });
+
+        warnLbl.setText("         .");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newGameBtn))
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(joinBtn)
+                        .addGap(52, 52, 52)
+                        .addComponent(warnLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,13 +144,55 @@ public class MenuScreen extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3))
+                        .addComponent(newGameBtn))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(joinBtn)
+                    .addComponent(warnLbl))
+                .addGap(36, 36, 36))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
+        // TODO add your handling code here:
+        gameDao.addGame(userId);
+        displayGames();
+    }//GEN-LAST:event_newGameBtnActionPerformed
+
+    private void joinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinBtnActionPerformed
+        // TODO add your handling code here:
+        
+        
+        int row = gameTable.getSelectedRow();
+        int column = gameTable.getSelectedColumn();
+        System.out.println(column);
+        if(column ==0){    
+             String gameIdStr = (String)gameTable.getValueAt(row, column );
+             int gameIdInt = Integer.parseInt(gameIdStr);
+            //System.out.println("GID = "+gameId);
+            String resultStr = gameDao.joinGame(userId, gameIdInt);
+            int resultInt = Integer.parseInt(resultStr);
+            
+            if(resultInt ==1){
+                GameScreen game = new GameScreen();
+                game.setVisible(true);
+                this.dispose();
+            }else if(resultInt == 0){
+                warnLbl.setText("ERROR");
+            }else{
+                warnLbl.setText("ERROR");
+            }
+            
+        }else{
+            warnLbl.setText("Select a game ID");
+            
+        }
+        
+        
+    }//GEN-LAST:event_joinBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,7 +224,7 @@ public class MenuScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuScreen().setVisible(true);
+                new MenuScreen(userId).setVisible(true);
                 
                 
             }
@@ -151,11 +232,13 @@ public class MenuScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable gameTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton joinBtn;
+    private javax.swing.JButton newGameBtn;
+    private javax.swing.JLabel warnLbl;
     // End of variables declaration//GEN-END:variables
 }

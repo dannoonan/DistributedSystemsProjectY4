@@ -82,14 +82,8 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="usernameTxt">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Enter username"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="passwordTxt">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Enter password"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

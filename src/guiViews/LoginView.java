@@ -6,16 +6,14 @@
 package guiViews;
 
 
-import ttt.james.server.TTTWebService;
-import ttt.james.server.TTTWebService_Service;
+import daos.*;
 /**
  *
  * @author windows
  */
 public class LoginView extends javax.swing.JFrame {
 
-    TTTWebService proxy;
-    TTTWebService_Service link = new TTTWebService_Service();
+    UserDao userDao;
     
     
     String username;
@@ -25,7 +23,7 @@ public class LoginView extends javax.swing.JFrame {
      * Creates new form LoginView
      */
     public LoginView() {
-        proxy = link.getTTTWebServicePort();
+        userDao = new UserDao();
         initComponents();
     }
 
@@ -54,10 +52,6 @@ public class LoginView extends javax.swing.JFrame {
                 loginBtnActionPerformed(evt);
             }
         });
-
-        usernameTxt.setText("Enter username");
-
-        passwordTxt.setText("Enter password");
 
         jLabel1.setText("Username");
 
@@ -125,14 +119,17 @@ public class LoginView extends javax.swing.JFrame {
         username = usernameTxt.getText();
         password = passwordTxt.getText();
         
-        int result = login(username, password);
+        int result = userDao.login(username, password);
         
-        if (result ==0){
+        if (result ==-1){
             loginLbl.setText("unable to log in. Details incorrect");
             return;
             
         }else {
             System.out.println(result);
+            MenuScreen menu = new MenuScreen(result);
+            menu.setVisible(true);
+            this.dispose();
         }
         
         
@@ -145,13 +142,7 @@ public class LoginView extends javax.swing.JFrame {
         this.dispose();
         
     }//GEN-LAST:event_toRegBtnActionPerformed
-    public int login(String username, String password){
-        int returnInt =0;
-        returnInt = proxy.login(username, password);
-       // System.out.println("Test - "+ returnInt);
-        return returnInt;
-        
-    }
+   
     
     
     /**
