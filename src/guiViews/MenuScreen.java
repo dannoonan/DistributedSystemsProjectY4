@@ -59,7 +59,7 @@ public class MenuScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        leagueBtn = new javax.swing.JButton();
         newGameBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         gameTable = new javax.swing.JTable();
@@ -71,7 +71,12 @@ public class MenuScreen extends javax.swing.JFrame {
 
         jButton1.setText("Scores");
 
-        jButton2.setText("Records");
+        leagueBtn.setText("League");
+        leagueBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leagueBtnActionPerformed(evt);
+            }
+        });
 
         newGameBtn.setText("New Game");
         newGameBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -91,15 +96,27 @@ public class MenuScreen extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         gameTable.setColumnSelectionAllowed(true);
         gameTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(gameTable);
         gameTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (gameTable.getColumnModel().getColumnCount() > 0) {
+            gameTable.getColumnModel().getColumn(0).setResizable(false);
+            gameTable.getColumnModel().getColumn(1).setResizable(false);
+            gameTable.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         jLabel1.setText("Games to join");
 
@@ -120,7 +137,7 @@ public class MenuScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(leagueBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(newGameBtn))
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,7 +159,7 @@ public class MenuScreen extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(leagueBtn)
                         .addGap(18, 18, 18)
                         .addComponent(newGameBtn))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -194,6 +211,13 @@ public class MenuScreen extends javax.swing.JFrame {
         
     }//GEN-LAST:event_joinBtnActionPerformed
 
+    private void leagueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leagueBtnActionPerformed
+        // TODO add your handling code here:
+        LeagueScreen league = new LeagueScreen(userId);
+        league.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_leagueBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -234,10 +258,10 @@ public class MenuScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable gameTable;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton joinBtn;
+    private javax.swing.JButton leagueBtn;
     private javax.swing.JButton newGameBtn;
     private javax.swing.JLabel warnLbl;
     // End of variables declaration//GEN-END:variables

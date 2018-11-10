@@ -39,6 +39,10 @@ public class GameDao {
        return retString;
        
    }
-  
+  public String getLeagueTable(){
+       String retString= proxy.leagueTable();
+       
+       return retString;
+  }
    
 }
