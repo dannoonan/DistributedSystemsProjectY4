@@ -194,7 +194,7 @@ public class MenuScreen extends javax.swing.JFrame {
             int resultInt = Integer.parseInt(resultStr);
             
             if(resultInt ==1){
-                GameScreen game = new GameScreen();
+                GameScreen game = new GameScreen(userId, gameIdInt);
                 game.setVisible(true);
                 this.dispose();
             }else if(resultInt == 0){

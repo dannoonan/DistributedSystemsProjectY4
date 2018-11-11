@@ -87,9 +87,6 @@
     <Component class="javax.swing.JTextField" name="usernameTxt">
     </Component>
     <Component class="javax.swing.JTextField" name="passwordTxt">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Enter password"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="registerBtn">
       <Properties>

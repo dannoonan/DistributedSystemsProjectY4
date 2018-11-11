@@ -5,16 +5,25 @@
  */
 package guiViews;
 
+import daos.GameDao;
+
 /**
  *
  * @author windows
  */
 public class GameScreen extends javax.swing.JFrame {
 
+    static int userId;
+     static int gameId;
+    GameDao gameDao ;
+    
     /**
      * Creates new form GameScreen
      */
-    public GameScreen() {
+    public GameScreen(int userId, int gameId) {
+        this.userId = userId;
+        this.gameId = gameId;
+        gameDao = new GameDao();
         initComponents();
     }
 
@@ -27,21 +36,258 @@ public class GameScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pos02Btn = new javax.swing.JButton();
+        pos12Btn = new javax.swing.JButton();
+        pos22Btn = new javax.swing.JButton();
+        pos01Btn = new javax.swing.JButton();
+        pos11Btn = new javax.swing.JButton();
+        pos21Btn = new javax.swing.JButton();
+        pos00Btn = new javax.swing.JButton();
+        pos10Btn = new javax.swing.JButton();
+        pos20Btn = new javax.swing.JButton();
+        pos02Lbl = new javax.swing.JLabel();
+        pos12Lbl = new javax.swing.JLabel();
+        pos22Lbl = new javax.swing.JLabel();
+        pos01Lbl = new javax.swing.JLabel();
+        pos11Lbl = new javax.swing.JLabel();
+        pos21Lbl = new javax.swing.JLabel();
+        pos00Lbl = new javax.swing.JLabel();
+        pos10Lbl = new javax.swing.JLabel();
+        pos20Lbl = new javax.swing.JLabel();
+        warnLbl = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        pos02Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos02BtnActionPerformed(evt);
+            }
+        });
+
+        pos12Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos12BtnActionPerformed(evt);
+            }
+        });
+
+        pos22Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos22BtnActionPerformed(evt);
+            }
+        });
+
+        pos01Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos01BtnActionPerformed(evt);
+            }
+        });
+
+        pos11Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos11BtnActionPerformed(evt);
+            }
+        });
+
+        pos21Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos21BtnActionPerformed(evt);
+            }
+        });
+
+        pos00Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos00BtnActionPerformed(evt);
+            }
+        });
+
+        pos10Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos10BtnActionPerformed(evt);
+            }
+        });
+
+        pos20Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pos20BtnActionPerformed(evt);
+            }
+        });
+
+        pos02Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos02Lbl.setText("_____");
+
+        pos12Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos12Lbl.setText("_____");
+
+        pos22Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos22Lbl.setText("_____");
+
+        pos01Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos01Lbl.setText("_____");
+
+        pos11Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos11Lbl.setText("_____");
+
+        pos21Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos21Lbl.setText("_____");
+
+        pos00Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos00Lbl.setText("_____");
+
+        pos10Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos10Lbl.setText("_____");
+
+        pos20Lbl.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pos20Lbl.setText("_____");
+
+        warnLbl.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        warnLbl.setText("                      .");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 575, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pos02Lbl))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(pos00Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pos10Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pos20Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(41, 41, 41)
+                                .addComponent(pos12Lbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pos22Lbl))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pos01Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pos11Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pos21Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pos02Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pos12Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pos22Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(123, 123, 123)
+                                .addComponent(warnLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pos01Lbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pos11Lbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pos21Lbl))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pos00Lbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pos10Lbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pos20Lbl)))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 309, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pos02Lbl)
+                    .addComponent(pos22Lbl)
+                    .addComponent(pos12Lbl))
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pos01Lbl)
+                    .addComponent(pos11Lbl)
+                    .addComponent(pos21Lbl))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pos00Lbl)
+                    .addComponent(pos10Lbl)
+                    .addComponent(pos20Lbl))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pos22Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+                            .addComponent(pos02Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pos12Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pos21Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+                            .addComponent(pos01Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pos11Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(warnLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pos20Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE)
+                    .addComponent(pos00Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pos10Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(38, 38, 38))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pos02BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos02BtnActionPerformed
+        // TODO add your handling code here:
+        
+        String resultStr = gameDao.checkSquare(0, 2, gameId);
+        int result = Integer.parseInt(resultStr);
+        
+        if(result==0){
+            pos02Lbl.setText("X");
+        }else if(result==1){
+            warnLbl.setText("Square already taken");
+        }else{
+             warnLbl.setText("Square already taken");
+        }
+        
+    }//GEN-LAST:event_pos02BtnActionPerformed
+
+    private void pos12BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos12BtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pos12BtnActionPerformed
+
+    private void pos22BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos22BtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pos22BtnActionPerformed
+
+    private void pos01BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos01BtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pos01BtnActionPerformed
+
+    private void pos11BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos11BtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pos11BtnActionPerformed
+
+    private void pos21BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos21BtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pos21BtnActionPerformed
+
+    private void pos00BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos00BtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pos00BtnActionPerformed
+
+    private void pos10BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos10BtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pos10BtnActionPerformed
+
+    private void pos20BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos20BtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pos20BtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -73,14 +319,30 @@ public class GameScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GameScreen().setVisible(true);
+                new GameScreen(userId, gameId).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JButton pos00Btn;
+    private javax.swing.JLabel pos00Lbl;
+    private javax.swing.JButton pos01Btn;
+    private javax.swing.JLabel pos01Lbl;
+    private javax.swing.JButton pos02Btn;
+    private javax.swing.JLabel pos02Lbl;
+    private javax.swing.JButton pos10Btn;
+    private javax.swing.JLabel pos10Lbl;
+    private javax.swing.JButton pos11Btn;
+    private javax.swing.JLabel pos11Lbl;
+    private javax.swing.JButton pos12Btn;
+    private javax.swing.JLabel pos12Lbl;
+    private javax.swing.JButton pos20Btn;
+    private javax.swing.JLabel pos20Lbl;
+    private javax.swing.JButton pos21Btn;
+    private javax.swing.JLabel pos21Lbl;
+    private javax.swing.JButton pos22Btn;
+    private javax.swing.JLabel pos22Lbl;
+    private javax.swing.JLabel warnLbl;
     // End of variables declaration//GEN-END:variables
 }

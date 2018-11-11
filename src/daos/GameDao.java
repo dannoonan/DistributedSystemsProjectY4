@@ -44,5 +44,14 @@ public class GameDao {
        
        return retString;
   }
+  
+  
+  
+  public String checkSquare(int x, int y, int gid){
+      
+      String retString = proxy.checkSquare(x, y, gid);
+      
+      return retString;
+  }
    
 }
