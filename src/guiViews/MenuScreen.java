@@ -8,6 +8,7 @@ package guiViews;
 import daos.GameDao;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import models.Game;
 
 /**
  *
@@ -175,8 +176,13 @@ public class MenuScreen extends javax.swing.JFrame {
 
     private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
         // TODO add your handling code here:
-        gameDao.addGame(userId);
+       String gameIdStr =  gameDao.addGame(userId);
+       int gameIdInt = Integer.parseInt(gameIdStr);
         displayGames();
+        Game game = new Game(userId, gameIdInt, 1);
+        GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);
+        gameScreen.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_newGameBtnActionPerformed
 
     private void joinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinBtnActionPerformed
@@ -194,8 +200,9 @@ public class MenuScreen extends javax.swing.JFrame {
             int resultInt = Integer.parseInt(resultStr);
             
             if(resultInt ==1){
-                GameScreen game = new GameScreen(userId, gameIdInt);
-                game.setVisible(true);
+                Game game = new Game(userId, gameIdInt, 2);
+                GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);
+                gameScreen.setVisible(true);
                 this.dispose();
             }else if(resultInt == 0){
                 warnLbl.setText("ERROR");

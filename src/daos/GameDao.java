@@ -14,10 +14,19 @@ import ttt.james.server.TTTWebService_Service;
  */
 public class GameDao {
     
+    int userId;
+    int gameId;
+    
    TTTWebService proxy;
    TTTWebService_Service link = new TTTWebService_Service();
    
    public GameDao(){
+        proxy = link.getTTTWebServicePort();
+   }
+   
+   public GameDao(int uid, int gid){
+       this.userId = uid;
+       this.gameId = gid;
         proxy = link.getTTTWebServicePort();
     }
    
@@ -53,5 +62,20 @@ public class GameDao {
       
       return retString;
   }
+  
+  public String takeSquare(int x, int y, int gid, int pid){
+      //API IS WRONG HERE. BELOW PID AND GID IN RIGHT SPOTS
+      String retString = proxy.takeSquare(x, y, pid, gid);
+      
+      return retString;
+  }
+  
+  public String getBoard(){
+      //API IS WRONG HERE. BELOW PID AND GID IN RIGHT SPOTS
+      String retString = proxy.getBoard(this.gameId);
+      
+      return retString;
+  }
+  
    
 }
