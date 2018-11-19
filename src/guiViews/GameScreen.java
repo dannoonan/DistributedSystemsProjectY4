@@ -278,24 +278,28 @@ public class GameScreen extends javax.swing.JFrame {
         
         String result = gameDao.checkSquare(0, 2, gameId);
         
-        
-        if("0".equals(result)){
-           result = gameDao.takeSquare(0, 2, userId, gameId);
-            System.out.print("result= "+result);
-             if("1".equals(result)) {  
-                pos02Lbl.setText("X");
-             }
-        }else if("1".equals(result)){
-            warnLbl.setText("Square already taken");
+        if(gameObserver.getTurn()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(0, 2, userId, gameId);
+                System.out.print("result= "+result);
+                if("1".equals(result)) {  
+                    pos02Lbl.setText("X");
+                }
+           }else if("1".equals(result)){
+                warnLbl.setText("Square already taken");
+           }else{
+                 warnLbl.setText(result);
+           } 
         }else{
-             warnLbl.setText(result);
-        }
+            System.out.println("NOT TURN!");
+        } 
+        
         
     }//GEN-LAST:event_pos02BtnActionPerformed
 
     private void pos12BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos12BtnActionPerformed
         // TODO add your handling code here:
-        
+        System.out.println("TURN IS..................... "+gameObserver.getTurn());
         if(gameObserver.getTurn()){
             String result = gameDao.checkSquare(1, 2, gameId); 
             System.out.println("TURN!");

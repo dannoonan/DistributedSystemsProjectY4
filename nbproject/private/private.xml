@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/build/generated-sources/jax-ws/ttt/james/server/NewGame.java</file>
-            <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/guiViews/LoginView.java</file>
-            <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/guiViews/RegisterView.java</file>
+            <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/models/GameObserver.java</file>
             <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/guiViews/GameScreen.java</file>
             <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/models/Game.java</file>
-            <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/guiViews/MenuScreen.java</file>
-            <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/guiViews/LeagueScreen.java</file>
+            <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/models/GameThread.java</file>
             <file>file:/C:/Users/windows/Documents/NetBeansProjects/DistributedSystemsProjectY4/src/daos/GameDao.java</file>
         </group>
     </open-files>

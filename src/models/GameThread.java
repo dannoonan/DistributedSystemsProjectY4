@@ -6,6 +6,8 @@
 package models;
 
 import daos.GameDao;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,31 +30,74 @@ public class GameThread extends Thread {
     @Override
     public void run() {
        synchronized(gameDao){
-           
-           if(t.getName().equals("PollThread")){
-               String boardState1 = gameDao.getBoard();
-               String boardState2 = gameDao.getBoard();
-               
-               while(boardState1.equals(boardState2)){
-                   System.out.println("Here i am in thread POLLL");
-                 boardState2 = gameDao.getBoard();
-                 game.setTurnPlayable(false);
-                }             
+          /* while(game.getTurnPlayable()&&t.getName().equals("PlayThread")){
+               try{
+                    String boardState1 = game.getBoard();
+                    String boardState2 = gameDao.getBoard();
+                     System.out.println(game.getTurnPlayable());
 
-           }else if(t.getName().equals("PlayThread")){
-               String boardState1 = gameDao.getBoard();
-               String boardState2 = gameDao.getBoard();
+                    if(boardState1.equals(boardState2)){
+                      boardState2 = gameDao.getBoard();
+                      System.out.println("Here i am in thread PLAY");
+                      game.setTurnPlayable(true);
+                      sleep(1000);
+
+                     }
+                    if(!boardState1.equals(boardState2)){
+                        System.out.println("Here i am in thread PLAY NATHN HAPPENING");
+                        game.setBoard();
+                        game.setTurnPlayable(false);
+                        
+                    }
+                    
+                    
+                    
+           }catch(Exception e){
+                   System.out.println(e.toString());
+           } 
+           
+       }*/
+          while(true){
+           //while(!game.getTurnPlayable()&&t.getName().equals("PollThread")){
+               try{
+                String boardState1 = game.getBoard();
+                String boardState2 = gameDao.getBoard();
+
+                System.out.println("one poll");
+                System.out.println(game.getTurnPlayable());
+                
+                if(!game.getTurnPlayable()){
+                    if(!boardState1.equals(boardState2)){ 
+                        System.out.println("in play true");
+                        game.setTurnPlayable(true);
+                        game.setBoard();
+                        sleep(10000);
+                    }else if(boardState1.equals(boardState2)){
+                        System.out.println("in play false");
+                        game.setTurnPlayable(false);
+                        sleep(1000);
+                    }  
+                }else if(game.getTurnPlayable()){
+                     if(!boardState1.equals(boardState2)){ 
+                        System.out.println("in play set to false");
+                        game.setTurnPlayable(false);
+                        game.setBoard();
+                        sleep(1000);
+                    }
+                }else{
+                     sleep(1000);
+                 }
                
-               while(boardState1.equals(boardState2)){
-                 boardState2 = gameDao.getBoard();
-                    System.out.println("Here i am in thread PLAY");
-                 game.setTurnPlayable(true);
-                }   
-           }
-       }
-        
-        
+               }catch(Exception e){
+                   System.out.println(e.toString());
+               }
+               
+           }    
+           
+           
+           
     }
+  }
     
     public void start () {
       System.out.println("Starting " +  threadName );

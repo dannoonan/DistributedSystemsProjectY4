@@ -19,6 +19,7 @@ public class GameObserver extends Observer {
      public GameObserver(Game game){
          this.game = game;
          this.game.attach(this);
+         update();
      }
     
     

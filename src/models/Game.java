@@ -19,6 +19,7 @@ public class Game  {
      static int playerNum;
      static int userId;
      static int gameId;
+     static String boardState;
      static boolean gameInProgress;
      static boolean turnPlayable;
      private List<Observer> observers ;
@@ -32,10 +33,18 @@ public class Game  {
        this.playerNum = playerNum;
        gameInProgress = true;
        turnPlayable = false;
+       if(playerNum==1){
+            turnPlayable = true;
+       }
        gameDao = new GameDao(userId, gameId);
+       boardState = gameDao.getBoard();
        this.game = this;
        observers = new ArrayList<Observer>();
        System.out.println("in game constructor");
+       System.out.println("turnplayable =="+turnPlayable);
+      // startThreads();
+      notifyAllObservers();
+      pollDb();
        
          
         
@@ -44,8 +53,15 @@ public class Game  {
    public boolean getTurnPlayable(){
        return turnPlayable;
    }
+   public String getBoard(){
+       return boardState;
+   }
+   public void setBoard(){
+       boardState = gameDao.getBoard();
+   }
    public void setTurnPlayable(boolean turnPlayable){
-       this.turnPlayable = turnPlayable;    
+       this.turnPlayable = turnPlayable;  
+       notifyAllObservers();
    }
    
    public void attach(Observer observer){
@@ -56,39 +72,67 @@ public class Game  {
          observer.update();
       }
    } 
+   public void pollDb(){
+       GameThread pollThread; 
+       
+       pollThread = new GameThread( "PollThread", gameDao, game );
+       pollThread.start();
+       
+       try{                 
+           pollThread.join();
+
+        }catch ( Exception e) {
+           System.out.println("Interrupted");
+        }
+        
+   }
+   
+   
+ /*  public void startThreads(){
+       System.out.println("in game main ");
+    
+        System.out.println("in game main 1");
+        GameThread playThread ;
+        GameThread pollThread;
+        
+        
+        
+             
+          
+       
+          
+                  
+       
+        System.out.println(playerNum + " is the playernum");
+         for(int i=0; i<9; i++){
+            if(turnPlayable){
+              try{      
+                  playThread = new GameThread( "PlayThread", gameDao, game );           
+                  playThread.start();            
+                  playThread.join();
+                 
+              }catch ( Exception e) {
+                 System.out.println("Interrupted");
+              }
+            }else{
+                 try{      
+                   pollThread = new GameThread( "PollThread", gameDao, game );
+                  pollThread.start();            
+                  pollThread.join();
+                 
+
+              }catch ( Exception e) {
+                 System.out.println("Interrupted");
+              }
+                
+            }
+         
+         }
+        
+   }*/
     
     public static void main(String[] args){
-     System.out.println("in game main ");
-     while(gameInProgress){ 
-         System.out.println("in game main 1");
-        GameThread pollThread = new GameThread( "PollThread", gameDao, game );
-        GameThread playThread = new GameThread( "PlayThread", gameDao, game );
-
-         pollThread.start();
-         playThread.start();
-         if(playerNum==1){
-            try{
-                playThread.join();
-                pollThread.join();
-                
-
-            }catch ( Exception e) {
-               System.out.println("Interrupted");
-            }
-         } else{
-             try{
-               pollThread.join(); 
-               playThread.join();
-                
-                
-
-            }catch ( Exception e) {
-               System.out.println("Interrupted");
-            }
-             
-         }  
-     }
-        
+     
     }
     
 }

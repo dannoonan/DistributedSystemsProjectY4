@@ -180,7 +180,7 @@ public class MenuScreen extends javax.swing.JFrame {
        int gameIdInt = Integer.parseInt(gameIdStr);
         displayGames();
         Game game = new Game(userId, gameIdInt, 1);
-        GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);
+        GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);      
         gameScreen.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_newGameBtnActionPerformed
