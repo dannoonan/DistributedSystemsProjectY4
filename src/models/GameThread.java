@@ -64,7 +64,9 @@ public class GameThread extends Thread {
                 String boardState2 = gameDao.getBoard();
 
                 System.out.println("one poll");
-                System.out.println(game.getTurnPlayable());
+                System.out.println(game.getTurnPlayable()+"HERE");
+                System.out.println(boardState1);
+                System.out.println(boardState2);
                 
                 if(!game.getTurnPlayable()){
                     if(!boardState1.equals(boardState2)){ 

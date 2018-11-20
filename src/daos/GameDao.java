@@ -77,5 +77,10 @@ public class GameDao {
       return retString;
   }
   
+  public String getGameState(){
+      String retString = proxy.getGameState(this.gameId);
+      
+      return retString;
+  
    
 }
