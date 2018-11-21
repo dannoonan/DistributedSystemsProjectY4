@@ -376,7 +376,7 @@ public class GameScreen extends javax.swing.JFrame {
                 if("1".equals(result)) {  
                     pos02Lbl.setText(playerSymbol);
                     waitTurn();
-                    game.pollDb();
+                   
                     turnLbl.setText("other player's turn ");
                     System.out.println("hey");
                     
@@ -620,6 +620,7 @@ public class GameScreen extends javax.swing.JFrame {
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
         setBoardView();
+        game.checkWin();
     }//GEN-LAST:event_updateBtnActionPerformed
 
     /**
