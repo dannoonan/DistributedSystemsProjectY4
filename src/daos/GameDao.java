@@ -54,7 +54,12 @@ public class GameDao {
        return retString;
   }
   
-  
+  public String getGameState(){
+      String retStr = proxy.getGameState(gameId);
+      
+      
+      return retStr;
+  }
   
   public String checkSquare(int x, int y, int gid){
       
@@ -73,6 +78,12 @@ public class GameDao {
   public String getBoard(){
       //API IS WRONG HERE. BELOW PID AND GID IN RIGHT SPOTS
       String retString = proxy.getBoard(this.gameId);
+      
+      return retString;
+  }
+  public String checkWin(){
+      //API IS WRONG HERE. BELOW PID AND GID IN RIGHT SPOTS
+      String retString = proxy.checkWin(this.gameId);
       
       return retString;
   }

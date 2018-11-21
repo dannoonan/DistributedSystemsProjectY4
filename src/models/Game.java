@@ -24,6 +24,8 @@ public class Game  {
      static boolean turnPlayable;
      private List<Observer> observers ;
      static Game game;
+     static boolean gameOver;
+     static String winner;
      
    
     
@@ -40,10 +42,12 @@ public class Game  {
        boardState = gameDao.getBoard();
        this.game = this;
        observers = new ArrayList<Observer>();
+       gameOver = false;
+       winner = "";
        System.out.println("in game constructor");
        System.out.println("turnplayable =="+turnPlayable);
       // startThreads();
-      notifyAllObservers();
+      //notifyAllObservers();
       pollDb();
        
          
@@ -72,6 +76,53 @@ public class Game  {
          observer.update();
       }
    } 
+   
+   public boolean checkWin(){
+       String resultString = gameDao.checkWin();
+       
+       if(resultString.equals("1")){
+           winner = "Player 1";
+           gameOver = true;
+       }else if(resultString.equals("2")){
+            winner = "Player 1";
+            gameOver = true;
+       }else if(resultString.equals("3")){
+            winner = "Draw";
+            gameOver = true;
+       }else{
+           gameOver = false;
+       }
+       
+       return gameOver;
+   }
+   
+   public String getWinner(){
+        return winner;
+   }
+   
+   public int getPlayerNum(){
+       
+       return playerNum;
+   }
+   public boolean gameStarted(){
+       boolean retBool =false;
+       
+       if(playerNum ==2){
+           retBool = true;
+       }
+        System.out.println("in gamestart function");
+       while(retBool == false){ 
+            if(gameDao.getGameState().equals("-1")){
+                retBool =false;
+                System.out.println("in gamestart function -- false");
+            }else if(gameDao.getGameState().equals("0")){
+                retBool =true;
+                System.out.println("in gamestart function ---true");
+            }
+       }
+       return retBool;
+   }
+   
    public void pollDb(){
        GameThread pollThread; 
        
@@ -86,7 +137,28 @@ public class Game  {
         }
         
    }
-   
+   public int waitForTurn(){
+  
+       
+       GameThread waitThread; 
+       
+       waitThread = new GameThread( "WaitThread", gameDao, game );
+       waitThread.start();
+       if(checkWin()==true){
+           turnPlayable =false;
+           return 1;
+       }
+       
+        try{                 
+            waitThread.join();
+
+        }catch ( Exception e) {
+            System.out.println("Interrupted");
+        }
+      
+       System.out.println("in method waitforturn");
+       return 0;
+   }
    
  /*  public void startThreads(){
        System.out.println("in game main ");

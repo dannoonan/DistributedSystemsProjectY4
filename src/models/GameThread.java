@@ -29,36 +29,7 @@ public class GameThread extends Thread {
     
     @Override
     public void run() {
-       synchronized(gameDao){
-          /* while(game.getTurnPlayable()&&t.getName().equals("PlayThread")){
-               try{
-                    String boardState1 = game.getBoard();
-                    String boardState2 = gameDao.getBoard();
-                     System.out.println(game.getTurnPlayable());
-
-                    if(boardState1.equals(boardState2)){
-                      boardState2 = gameDao.getBoard();
-                      System.out.println("Here i am in thread PLAY");
-                      game.setTurnPlayable(true);
-                      sleep(1000);
-
-                     }
-                    if(!boardState1.equals(boardState2)){
-                        System.out.println("Here i am in thread PLAY NATHN HAPPENING");
-                        game.setBoard();
-                        game.setTurnPlayable(false);
-                        
-                    }
-                    
-                    
-                    
-           }catch(Exception e){
-                   System.out.println(e.toString());
-           } 
-           
-       }*/
-          while(true){
-           //while(!game.getTurnPlayable()&&t.getName().equals("PollThread")){
+       synchronized(gameDao){         
                try{
                 String boardState1 = game.getBoard();
                 String boardState2 = gameDao.getBoard();
@@ -71,31 +42,27 @@ public class GameThread extends Thread {
                         System.out.println("in play true");
                         game.setTurnPlayable(true);
                         game.setBoard();
-                        sleep(10000);
+               
                     }else if(boardState1.equals(boardState2)){
                         System.out.println("in play false");
+                        System.out.println(this.threadName);
                         game.setTurnPlayable(false);
-                        sleep(1000);
+                       
                     }  
                 }else if(game.getTurnPlayable()){
                      if(!boardState1.equals(boardState2)){ 
                         System.out.println("in play set to false");
                         game.setTurnPlayable(false);
                         game.setBoard();
-                        sleep(1000);
+                        
                     }
                 }else{
-                     sleep(1000);
+                     //sleep(1000);
                  }
                
                }catch(Exception e){
                    System.out.println(e.toString());
-               }
-               
-           }    
-           
-           
-           
+               }         
     }
   }
     

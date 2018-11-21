@@ -16,9 +16,13 @@ public class GameScreen extends javax.swing.JFrame {
 
     static int userId;
      static int gameId;
-    GameObserver gameObserver;
+    //GameObserver gameObserver;
     GameDao gameDao ;
     static Game game;
+    String playerSymbol;
+    String opponentSymbol;
+    boolean gameStarted;
+   
     
     /**
      * Creates new form GameScreen
@@ -28,11 +32,79 @@ public class GameScreen extends javax.swing.JFrame {
         this.gameId = gameId;
         gameDao = new GameDao(userId, gameId);
         this.game = game;
-        this.gameObserver = new GameObserver(game);
+       // this.gameObserver = new GameObserver(game);
+       if(game.getPlayerNum()==1){
+           playerSymbol ="__X__";
+           opponentSymbol = "__O__";
+       }else{
+           playerSymbol ="__O__";
+           opponentSymbol = "__X__";
+       }
         initComponents();
-          
+        game.gameStarted();
+        
     }
+    public void setBoardView(){
+        if(!gameDao.getBoard().equals("ERROR-NOMOVES")){
+            String[] moves = gameDao.getBoard().split("\\s*\n\\s*");
+            for(int i=0; i<moves.length;i++){
+                String [] movesDetails = moves[i].split("\\s*,\\s*");
+                int playerId = Integer.parseInt(movesDetails[0]);
+                String x = movesDetails[1];
+                String y = movesDetails[2];
+                String tempSymbol = "";
 
+                 if(playerId==userId){
+                     tempSymbol=playerSymbol;
+                 }else{
+                     tempSymbol=opponentSymbol;
+                 }
+
+                if(x.equals("0")&&y.equals("0")){
+                    pos00Lbl.setText(tempSymbol);
+                }else if(x.equals("0")&&y.equals("1")){
+                    pos01Lbl.setText(tempSymbol);
+                }
+                else if(x.equals("0")&&y.equals("2")){
+                    pos02Lbl.setText(tempSymbol);
+                }
+                else if(x.equals("1")&&y.equals("0")){
+                    pos10Lbl.setText(tempSymbol);
+                }
+                else if(x.equals("1")&&y.equals("1")){
+                    pos11Lbl.setText(tempSymbol);
+                }
+                else if(x.equals("1")&&y.equals("2")){
+                    pos12Lbl.setText(tempSymbol);
+                }
+                else if(x.equals("2")&&y.equals("0")){
+                    pos20Lbl.setText(tempSymbol);
+                }
+                else if(x.equals("2")&&y.equals("1")){
+                    pos21Lbl.setText(tempSymbol);
+                }
+                else if(x.equals("2")&&y.equals("2")){
+                    pos22Lbl.setText(tempSymbol);
+                }
+
+            }
+        }
+       
+    }
+    
+    public void waitTurn(){  
+        game.pollDb();
+       if(game.waitForTurn()==1){
+          if(!game.getWinner().equals("")) {
+               announceLbl.setText(game.getWinner()+ " wins");
+          }else{
+              announceLbl.setText("Draw");
+          }
+          
+       }else if(game.waitForTurn()==0){
+           announceLbl.setText("other player's turn");
+       }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,6 +135,8 @@ public class GameScreen extends javax.swing.JFrame {
         warnLbl = new javax.swing.JLabel();
         stateBtn = new javax.swing.JButton();
         turnLbl = new javax.swing.JLabel();
+        updateBtn = new javax.swing.JButton();
+        announceLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -159,6 +233,16 @@ public class GameScreen extends javax.swing.JFrame {
 
         turnLbl.setText(".");
 
+        updateBtn.setText("Update Board");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
+
+        announceLbl.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        announceLbl.setText(".");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,18 +250,24 @@ public class GameScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(pos02Lbl))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(41, 41, 41)
                                 .addComponent(pos12Lbl)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pos22Lbl))
+                                .addComponent(pos22Lbl)
+                                .addGap(81, 81, 81)
+                                .addComponent(announceLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pos00Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pos10Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(pos20Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(pos01Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -190,32 +280,31 @@ public class GameScreen extends javax.swing.JFrame {
                                         .addComponent(pos12Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(pos22Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(123, 123, 123)
-                                .addComponent(warnLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(pos00Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pos10Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pos20Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(66, 66, 66)
-                                .addComponent(stateBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
-                                .addComponent(turnLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(stateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(updateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(turnLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(warnLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(pos01Lbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pos11Lbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pos21Lbl))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(pos00Lbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pos10Lbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pos20Lbl)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pos02Lbl)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(pos01Lbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pos11Lbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pos21Lbl))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(pos00Lbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pos10Lbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pos20Lbl)))
+                        .addGap(327, 327, 327)))
                 .addGap(61, 61, 61))
         );
         layout.setVerticalGroup(
@@ -225,7 +314,8 @@ public class GameScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pos02Lbl)
                     .addComponent(pos22Lbl)
-                    .addComponent(pos12Lbl))
+                    .addComponent(pos12Lbl)
+                    .addComponent(announceLbl))
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pos01Lbl)
@@ -238,36 +328,36 @@ public class GameScreen extends javax.swing.JFrame {
                     .addComponent(pos20Lbl))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(warnLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pos22Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                            .addComponent(pos02Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pos12Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pos21Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                            .addComponent(pos01Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pos11Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(warnLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(pos12Btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pos02Btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pos22Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(stateBtn))
+                        .addComponent(turnLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(5, 5, 5))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(updateBtn)
+                        .addGap(20, 20, 20)
+                        .addComponent(stateBtn)
+                        .addContainerGap(22, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(turnLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(5, 5, 5))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pos20Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                                    .addComponent(pos00Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(pos10Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(13, 13, 13)))))
-                .addContainerGap())
+                                .addComponent(pos01Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(pos10Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(pos00Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(pos20Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(pos11Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pos21Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pack();
@@ -276,14 +366,20 @@ public class GameScreen extends javax.swing.JFrame {
     private void pos02BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos02BtnActionPerformed
         // TODO add your handling code here:
         
+        game.pollDb();
         String result = gameDao.checkSquare(0, 2, gameId);
         
-        if(gameObserver.getTurn()){
+        if(game.getTurnPlayable()){
            if("0".equals(result)){
                 result = gameDao.takeSquare(0, 2, userId, gameId);
                 System.out.print("result= "+result);
                 if("1".equals(result)) {  
-                    pos02Lbl.setText("X");
+                    pos02Lbl.setText(playerSymbol);
+                    waitTurn();
+                    game.pollDb();
+                    turnLbl.setText("other player's turn ");
+                    System.out.println("hey");
+                    
                 }
            }else if("1".equals(result)){
                 warnLbl.setText("Square already taken");
@@ -299,152 +395,212 @@ public class GameScreen extends javax.swing.JFrame {
 
     private void pos12BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos12BtnActionPerformed
         // TODO add your handling code here:
-        System.out.println("TURN IS..................... "+gameObserver.getTurn());
-        if(gameObserver.getTurn()){
-            String result = gameDao.checkSquare(1, 2, gameId); 
-            System.out.println("TURN!");
-          /* if("0".equals(result)){
-                //result = gameDao.takeSquare(1,2, userId, gameId);
+        //System.out.println("TURN IS..................... "+gameObserver.getTurn());
+        setBoardView();
+         game.pollDb();
+        String result = gameDao.checkSquare(1, 2, gameId);
+        
+        if(game.getTurnPlayable()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(1, 2, userId, gameId);
                 System.out.print("result= "+result);
-                 if("1".equals(result)) {  
-                    pos12Lbl.setText("X");
-                 }
-            }else if("1".equals(result)){
+                if("1".equals(result)) {  
+                    pos12Lbl.setText(playerSymbol);
+                    turnLbl.setText("other player's turn ");
+                    waitTurn();
+                }
+           }else if("1".equals(result)){
                 warnLbl.setText("Square already taken");
-            }else{
+           }else{
                  warnLbl.setText(result);
-            }*/
+           } 
         }else{
             System.out.println("NOT TURN!");
-        }
+        } 
+        
        
     }//GEN-LAST:event_pos12BtnActionPerformed
 
     private void pos22BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos22BtnActionPerformed
         // TODO add your handling code here:
+        setBoardView();
+         game.pollDb();
         String result = gameDao.checkSquare(2, 2, gameId);
         
-        
-        if("0".equals(result)){
-           result = gameDao.takeSquare(2, 2, userId, gameId);
-            System.out.print("result= "+result);
-             if("1".equals(result)) {  
-                pos22Lbl.setText("X");
-             }
-        }else if("1".equals(result)){
-            warnLbl.setText("Square already taken");
+        if(game.getTurnPlayable()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(2, 2, userId, gameId);
+                System.out.print("result= "+result);
+                if("1".equals(result)) {  
+                    pos22Lbl.setText(playerSymbol);
+                    turnLbl.setText("other player's turn ");
+                    waitTurn();
+                }
+           }else if("1".equals(result)){
+                warnLbl.setText("Square already taken");
+           }else{
+                 warnLbl.setText(result);
+           } 
         }else{
-             warnLbl.setText(result);
-        }
+            System.out.println("NOT TURN!");
+        } 
+        
     }//GEN-LAST:event_pos22BtnActionPerformed
 
     private void pos01BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos01BtnActionPerformed
         // TODO add your handling code here:
+        setBoardView();
+         game.pollDb();
         String result = gameDao.checkSquare(0, 1, gameId);
         
-        
-       if("0".equals(result)){
-           result = gameDao.takeSquare(0, 1, userId, gameId);
-            System.out.print("result= "+result);
-             if("1".equals(result)) {  
-                pos01Lbl.setText("X");
-             }
-        }else if("1".equals(result)){
-            warnLbl.setText("Square already taken");
+        if(game.getTurnPlayable()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(0, 1, userId, gameId);
+                System.out.print("result= "+result);
+                if("1".equals(result)) {  
+                    pos01Lbl.setText(playerSymbol);
+                    turnLbl.setText("other player's turn ");
+                    waitTurn();
+                }
+           }else if("1".equals(result)){
+                warnLbl.setText("Square already taken");
+           }else{
+                 warnLbl.setText(result);
+           } 
         }else{
-             warnLbl.setText(result);
-        }
+            System.out.println("NOT TURN!");
+        } 
+        
     }//GEN-LAST:event_pos01BtnActionPerformed
 
     private void pos11BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos11BtnActionPerformed
         // TODO add your handling code here:
+        setBoardView();
+         game.pollDb();
         String result = gameDao.checkSquare(1, 1, gameId);
         
-        
-        if("0".equals(result)){
-            result = gameDao.takeSquare(1,1, userId, gameId);
-            System.out.print("result= "+result);
-             if("1".equals(result)) {  
-                pos11Lbl.setText("X");
-             }
-        }else if("1".equals(result)){
-            warnLbl.setText("Square already taken");
+        if(game.getTurnPlayable()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(1, 1, userId, gameId);
+                System.out.print("result= "+result);
+                if("1".equals(result)) {  
+                    pos11Lbl.setText(playerSymbol);
+                    turnLbl.setText("other player's turn ");
+                    waitTurn();
+                }
+           }else if("1".equals(result)){
+                warnLbl.setText("Square already taken");
+           }else{
+                 warnLbl.setText(result);
+           } 
         }else{
-             warnLbl.setText(result);
-        }
+            System.out.println("NOT TURN!");
+        } 
+        
     }//GEN-LAST:event_pos11BtnActionPerformed
 
     private void pos21BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos21BtnActionPerformed
         // TODO add your handling code here:
-        String result = gameDao.checkSquare(2,1, gameId);
+        setBoardView();
+         game.pollDb();
+        String result = gameDao.checkSquare(2, 1, gameId);
         
-        
-       if("0".equals(result)){
-           result = gameDao.takeSquare(2, 1, userId, gameId);
-            System.out.print("result= "+result);
-             if("1".equals(result)) {  
-                pos21Lbl.setText("X");
-             }
-        }else if("1".equals(result)){
-            warnLbl.setText("Square already taken");
+        if(game.getTurnPlayable()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(2, 1, userId, gameId);
+                System.out.print("result= "+result);
+                if("1".equals(result)) {  
+                    pos21Lbl.setText(playerSymbol);
+                    turnLbl.setText("other player's turn ");
+                    waitTurn();
+                }
+           }else if("1".equals(result)){
+                warnLbl.setText("Square already taken");
+           }else{
+                 warnLbl.setText(result);
+           } 
         }else{
-             warnLbl.setText(result);
-        }
+            System.out.println("NOT TURN!");
+        } 
+        
     }//GEN-LAST:event_pos21BtnActionPerformed
 
     private void pos00BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos00BtnActionPerformed
         // TODO add your handling code here:
+        setBoardView();
+        game.pollDb();
         String result = gameDao.checkSquare(0, 0, gameId);
         
-        
-        if("0".equals(result)){
-           result = gameDao.takeSquare(0, 0, userId, gameId);
-            System.out.print("result= "+result);
-             if("1".equals(result)) {  
-                pos00Lbl.setText("X");
-             }
-        }else if("1".equals(result)){
-            warnLbl.setText("Square already taken");
+        if(game.getTurnPlayable()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(0, 0, userId, gameId);
+                System.out.print("result= "+result);
+                if("1".equals(result)) {  
+                    pos00Lbl.setText(playerSymbol);
+                    turnLbl.setText("other player's turn ");
+                    waitTurn();
+                }
+           }else if("1".equals(result)){
+                warnLbl.setText("Square already taken");
+           }else{
+                 warnLbl.setText(result);
+           } 
         }else{
-             warnLbl.setText(result);
-        }
+            System.out.println("NOT TURN!");
+        } 
+        
     }//GEN-LAST:event_pos00BtnActionPerformed
 
     private void pos10BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos10BtnActionPerformed
         // TODO add your handling code here:
-        String result = gameDao.checkSquare(1,0, gameId);
+        setBoardView();
+         game.pollDb();
+        String result = gameDao.checkSquare(1, 0, gameId);
         
-        
-        if("0".equals(result)){
-           result = gameDao.takeSquare(1, 0, userId, gameId);
-            System.out.print("result= "+result);
-             if("1".equals(result)) {  
-                pos10Lbl.setText("X");
-             }
-        }else if("1".equals(result)){
-            warnLbl.setText("Square already taken");
+        if(game.getTurnPlayable()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(1, 0, userId, gameId);
+                System.out.print("result= "+result);
+                if("1".equals(result)) {  
+                    pos10Lbl.setText(playerSymbol);
+                    turnLbl.setText("other player's turn ");
+                    waitTurn();
+                }
+           }else if("1".equals(result)){
+                warnLbl.setText("Square already taken");
+           }else{
+                 warnLbl.setText(result);
+           } 
         }else{
-             warnLbl.setText(result);
-        }
+            System.out.println("NOT TURN!");
+        } 
+        
     }//GEN-LAST:event_pos10BtnActionPerformed
 
     private void pos20BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos20BtnActionPerformed
         // TODO add your handling code here:
-         String result = gameDao.checkSquare(1,0, gameId);
-        System.out.print(result);
+        setBoardView();
+         game.pollDb();
+        String result = gameDao.checkSquare(2, 0, gameId);
         
-        if("0".equals(result)){
-            
-            result = gameDao.takeSquare(2, 0, userId, gameId);
-            System.out.print("result= "+result);
-             if("1".equals(result)) {  
-                pos20Lbl.setText("X");
-             }
-        }else if("1".equals(result)){
-            warnLbl.setText("Square already taken");
+        if(game.getTurnPlayable()){
+           if("0".equals(result)){
+                result = gameDao.takeSquare(2, 0, userId, gameId);
+                System.out.print("result= "+result);
+                if("1".equals(result)) {  
+                    pos20Lbl.setText(playerSymbol);
+                    turnLbl.setText("other player's turn ");
+                    waitTurn();
+                }
+           }else if("1".equals(result)){
+                warnLbl.setText("Square already taken");
+           }else{
+                 warnLbl.setText(result);
+           } 
         }else{
-             warnLbl.setText(result);
-        }
+            System.out.println("NOT TURN!");
+        } 
+        
     }//GEN-LAST:event_pos20BtnActionPerformed
 
     private void stateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stateBtnActionPerformed
@@ -460,6 +616,11 @@ public class GameScreen extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_stateBtnActionPerformed
+
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+        // TODO add your handling code here:
+        setBoardView();
+    }//GEN-LAST:event_updateBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -491,12 +652,15 @@ public class GameScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+              
                 new GameScreen(userId, gameId, game).setVisible(true);
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel announceLbl;
     private javax.swing.JButton pos00Btn;
     private javax.swing.JLabel pos00Lbl;
     private javax.swing.JButton pos01Btn;
@@ -517,6 +681,7 @@ public class GameScreen extends javax.swing.JFrame {
     private javax.swing.JLabel pos22Lbl;
     private javax.swing.JButton stateBtn;
     private javax.swing.JLabel turnLbl;
+    private javax.swing.JButton updateBtn;
     private javax.swing.JLabel warnLbl;
     // End of variables declaration//GEN-END:variables
 }
