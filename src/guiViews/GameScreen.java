@@ -44,6 +44,10 @@ public class GameScreen extends javax.swing.JFrame {
         game.gameStarted();
         
     }
+    /**
+     * Retrieves the moves made so far in the game from the database through the DAO
+     * and represents the board on the screen
+     */
     public void setBoardView(){
         if(!gameDao.getBoard().equals("ERROR-NOMOVES")){
             String[] moves = gameDao.getBoard().split("\\s*\n\\s*");
@@ -101,8 +105,6 @@ public class GameScreen extends javax.swing.JFrame {
               announceLbl.setText("Draw");
           }
           
-       }else if(game.waitForTurn()==0){
-           announceLbl.setText("other player's turn");
        }
     }
     /**
@@ -349,13 +351,17 @@ public class GameScreen extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(pos01Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pos01Btn, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pos11Btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(6, 6, 6)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(pos10Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(pos00Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(pos20Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(pos11Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(pos21Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -372,7 +378,7 @@ public class GameScreen extends javax.swing.JFrame {
         if(game.getTurnPlayable()){
            if("0".equals(result)){
                 result = gameDao.takeSquare(0, 2, userId, gameId);
-                System.out.print("result= "+result);
+               
                 if("1".equals(result)) {  
                     pos02Lbl.setText(playerSymbol);
                     waitTurn();
@@ -387,7 +393,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+            warnLbl.setText("NOT TURN!");
         } 
         
         
@@ -403,10 +409,10 @@ public class GameScreen extends javax.swing.JFrame {
         if(game.getTurnPlayable()){
            if("0".equals(result)){
                 result = gameDao.takeSquare(1, 2, userId, gameId);
-                System.out.print("result= "+result);
+               
                 if("1".equals(result)) {  
                     pos12Lbl.setText(playerSymbol);
-                    turnLbl.setText("other player's turn ");
+                   
                     waitTurn();
                 }
            }else if("1".equals(result)){
@@ -415,7 +421,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+             warnLbl.setText("NOT TURN!");
         } 
         
        
@@ -430,10 +436,10 @@ public class GameScreen extends javax.swing.JFrame {
         if(game.getTurnPlayable()){
            if("0".equals(result)){
                 result = gameDao.takeSquare(2, 2, userId, gameId);
-                System.out.print("result= "+result);
+              
                 if("1".equals(result)) {  
                     pos22Lbl.setText(playerSymbol);
-                    turnLbl.setText("other player's turn ");
+                    
                     waitTurn();
                 }
            }else if("1".equals(result)){
@@ -442,7 +448,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+            warnLbl.setText("NOT TURN!");
         } 
         
     }//GEN-LAST:event_pos22BtnActionPerformed
@@ -456,10 +462,10 @@ public class GameScreen extends javax.swing.JFrame {
         if(game.getTurnPlayable()){
            if("0".equals(result)){
                 result = gameDao.takeSquare(0, 1, userId, gameId);
-                System.out.print("result= "+result);
+               
                 if("1".equals(result)) {  
                     pos01Lbl.setText(playerSymbol);
-                    turnLbl.setText("other player's turn ");
+                    
                     waitTurn();
                 }
            }else if("1".equals(result)){
@@ -468,7 +474,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+             warnLbl.setText("NOT TURN!");
         } 
         
     }//GEN-LAST:event_pos01BtnActionPerformed
@@ -482,10 +488,10 @@ public class GameScreen extends javax.swing.JFrame {
         if(game.getTurnPlayable()){
            if("0".equals(result)){
                 result = gameDao.takeSquare(1, 1, userId, gameId);
-                System.out.print("result= "+result);
+                
                 if("1".equals(result)) {  
                     pos11Lbl.setText(playerSymbol);
-                    turnLbl.setText("other player's turn ");
+                    
                     waitTurn();
                 }
            }else if("1".equals(result)){
@@ -494,7 +500,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+            warnLbl.setText("NOT TURN!");
         } 
         
     }//GEN-LAST:event_pos11BtnActionPerformed
@@ -508,10 +514,10 @@ public class GameScreen extends javax.swing.JFrame {
         if(game.getTurnPlayable()){
            if("0".equals(result)){
                 result = gameDao.takeSquare(2, 1, userId, gameId);
-                System.out.print("result= "+result);
+               
                 if("1".equals(result)) {  
                     pos21Lbl.setText(playerSymbol);
-                    turnLbl.setText("other player's turn ");
+                  
                     waitTurn();
                 }
            }else if("1".equals(result)){
@@ -520,7 +526,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+             warnLbl.setText("NOT TURN!");
         } 
         
     }//GEN-LAST:event_pos21BtnActionPerformed
@@ -534,10 +540,10 @@ public class GameScreen extends javax.swing.JFrame {
         if(game.getTurnPlayable()){
            if("0".equals(result)){
                 result = gameDao.takeSquare(0, 0, userId, gameId);
-                System.out.print("result= "+result);
+               
                 if("1".equals(result)) {  
                     pos00Lbl.setText(playerSymbol);
-                    turnLbl.setText("other player's turn ");
+                   
                     waitTurn();
                 }
            }else if("1".equals(result)){
@@ -546,7 +552,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+            warnLbl.setText("NOT TURN!");
         } 
         
     }//GEN-LAST:event_pos00BtnActionPerformed
@@ -554,7 +560,7 @@ public class GameScreen extends javax.swing.JFrame {
     private void pos10BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pos10BtnActionPerformed
         // TODO add your handling code here:
         setBoardView();
-         game.pollDb();
+        game.pollDb();
         String result = gameDao.checkSquare(1, 0, gameId);
         
         if(game.getTurnPlayable()){
@@ -563,7 +569,7 @@ public class GameScreen extends javax.swing.JFrame {
                 System.out.print("result= "+result);
                 if("1".equals(result)) {  
                     pos10Lbl.setText(playerSymbol);
-                    turnLbl.setText("other player's turn ");
+                    
                     waitTurn();
                 }
            }else if("1".equals(result)){
@@ -572,7 +578,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+             warnLbl.setText("NOT TURN!");
         } 
         
     }//GEN-LAST:event_pos10BtnActionPerformed
@@ -589,7 +595,7 @@ public class GameScreen extends javax.swing.JFrame {
                 System.out.print("result= "+result);
                 if("1".equals(result)) {  
                     pos20Lbl.setText(playerSymbol);
-                    turnLbl.setText("other player's turn ");
+                    
                     waitTurn();
                 }
            }else if("1".equals(result)){
@@ -598,7 +604,7 @@ public class GameScreen extends javax.swing.JFrame {
                  warnLbl.setText(result);
            } 
         }else{
-            System.out.println("NOT TURN!");
+             warnLbl.setText("NOT TURN!");
         } 
         
     }//GEN-LAST:event_pos20BtnActionPerformed

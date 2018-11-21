@@ -84,6 +84,9 @@
     <Component class="javax.swing.JTextField" name="usernameTxt">
     </Component>
     <Component class="javax.swing.JTextField" name="passwordTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="password"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

@@ -53,6 +53,8 @@ public class LoginView extends javax.swing.JFrame {
             }
         });
 
+        passwordTxt.setText("password");
+
         jLabel1.setText("Username");
 
         jLabel2.setText("Password");
@@ -127,7 +129,7 @@ public class LoginView extends javax.swing.JFrame {
             
         }else {
             System.out.println(result);
-            MenuScreen menu = new MenuScreen(result);
+            MenuScreen menu = new MenuScreen(result, username);
             menu.setVisible(true);
             this.dispose();
         }

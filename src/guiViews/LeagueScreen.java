@@ -17,13 +17,16 @@ public class LeagueScreen extends javax.swing.JFrame {
 
     GameDao gameDao = new GameDao();
     static int userId;
+    static String username;
     
     /**
      * Creates new form RecordsScreen
      */
-    public LeagueScreen(int userId) {
+    public LeagueScreen(int userId, String username) {
         this.userId = userId;
+        this.username = username;
         initComponents();
+        displayGames();
     }
     
     
@@ -31,6 +34,7 @@ public class LeagueScreen extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) leagueTable.getModel();
         model.setRowCount(0);
         String games = gameDao.getLeagueTable();
+        //System.out.println(games);
         String [] gamesArr = games.split("\\s*\n\\s*");
         String [] gameDetails;
         
@@ -139,7 +143,7 @@ public class LeagueScreen extends javax.swing.JFrame {
 
     private void toMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toMenuBtnActionPerformed
         // TODO add your handling code here:
-        MenuScreen menu = new MenuScreen(userId);
+        MenuScreen menu = new MenuScreen(userId, username);
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_toMenuBtnActionPerformed
@@ -175,7 +179,7 @@ public class LeagueScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LeagueScreen(userId).setVisible(true);
+                new LeagueScreen(userId, username).setVisible(true);
             }
         });
     }

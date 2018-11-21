@@ -18,11 +18,13 @@ public class MenuScreen extends javax.swing.JFrame {
 
     GameDao gameDao;
     static int userId;
+    static String username;
     /**
      * Creates new form MenuScreen
      */
-    public MenuScreen(int userId) {
+    public MenuScreen(int userId, String username) {
         this.userId = userId;
+        this.username = username;
         gameDao = new GameDao();
         initComponents();
         displayGames();
@@ -59,8 +61,8 @@ public class MenuScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        leagueBtn = new javax.swing.JButton();
+        playerScoreBtn = new javax.swing.JButton();
+        leaderboardBtn = new javax.swing.JButton();
         newGameBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         gameTable = new javax.swing.JTable();
@@ -70,12 +72,17 @@ public class MenuScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Scores");
-
-        leagueBtn.setText("League");
-        leagueBtn.addActionListener(new java.awt.event.ActionListener() {
+        playerScoreBtn.setText("Player Scores");
+        playerScoreBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leagueBtnActionPerformed(evt);
+                playerScoreBtnActionPerformed(evt);
+            }
+        });
+
+        leaderboardBtn.setText("Leaderboard");
+        leaderboardBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leaderboardBtnActionPerformed(evt);
             }
         });
 
@@ -136,11 +143,11 @@ public class MenuScreen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(leagueBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newGameBtn))
-                .addGap(61, 61, 61)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(playerScoreBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(leaderboardBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newGameBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(joinBtn)
@@ -155,12 +162,12 @@ public class MenuScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(playerScoreBtn)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(leagueBtn)
+                        .addComponent(leaderboardBtn)
                         .addGap(18, 18, 18)
                         .addComponent(newGameBtn))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -218,12 +225,19 @@ public class MenuScreen extends javax.swing.JFrame {
         
     }//GEN-LAST:event_joinBtnActionPerformed
 
-    private void leagueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leagueBtnActionPerformed
+    private void leaderboardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaderboardBtnActionPerformed
         // TODO add your handling code here:
-        LeagueScreen league = new LeagueScreen(userId);
+        LeagueScreen league = new LeagueScreen(userId, username);
         league.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_leagueBtnActionPerformed
+    }//GEN-LAST:event_leaderboardBtnActionPerformed
+
+    private void playerScoreBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerScoreBtnActionPerformed
+        // TODO add your handling code here:
+        ScoreScreen playerScores = new ScoreScreen(userId, username);
+        playerScores.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_playerScoreBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,7 +269,7 @@ public class MenuScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuScreen(userId).setVisible(true);
+                new MenuScreen(userId, username).setVisible(true);
                 
                 
             }
@@ -264,12 +278,12 @@ public class MenuScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable gameTable;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton joinBtn;
-    private javax.swing.JButton leagueBtn;
+    private javax.swing.JButton leaderboardBtn;
     private javax.swing.JButton newGameBtn;
+    private javax.swing.JButton playerScoreBtn;
     private javax.swing.JLabel warnLbl;
     // End of variables declaration//GEN-END:variables
 }

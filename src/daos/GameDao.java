@@ -60,6 +60,9 @@ public class GameDao {
       
       return retStr;
   }
+  public void setGameState(int gState){
+      proxy.setGameState(gameId,gState);
+  }
   
   public String checkSquare(int x, int y, int gid){
       
@@ -86,6 +89,10 @@ public class GameDao {
       String retString = proxy.checkWin(this.gameId);
       
       return retString;
+  }
+  public String showAllMyGames(){
+      String retStr = proxy.showAllMyGames(userId);
+      return retStr;
   }
   
    

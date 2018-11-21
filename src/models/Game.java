@@ -83,12 +83,15 @@ public class Game  {
        if(resultString.equals("1")){
            winner = "Player 1";
            gameOver = true;
+           gameDao.setGameState(1);
        }else if(resultString.equals("2")){
-            winner = "Player 1";
+            winner = "Player 2";
             gameOver = true;
+            gameDao.setGameState(2);
        }else if(resultString.equals("3")){
             winner = "Draw";
             gameOver = true;
+            gameDao.setGameState(3);
        }else{
            gameOver = false;
        }
@@ -110,14 +113,14 @@ public class Game  {
        if(playerNum ==2){
            retBool = true;
        }
-        System.out.println("in gamestart function");
+        //System.out.println("in gamestart function");
        while(retBool == false){ 
             if(gameDao.getGameState().equals("-1")){
                 retBool =false;
-                System.out.println("in gamestart function -- false");
+                //System.out.println("in gamestart function -- false");
             }else if(gameDao.getGameState().equals("0")){
                 retBool =true;
-                System.out.println("in gamestart function ---true");
+                //System.out.println("in gamestart function ---true");
             }
        }
        return retBool;
