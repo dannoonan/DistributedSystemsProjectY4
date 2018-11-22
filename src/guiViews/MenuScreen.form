@@ -27,8 +27,9 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="playerScoreBtn" max="32767" attributes="0"/>
-                  <Component id="leaderboardBtn" alignment="0" max="32767" attributes="0"/>
+                  <Component id="playedGamesBtn" alignment="0" max="32767" attributes="0"/>
                   <Component id="newGameBtn" alignment="0" max="32767" attributes="0"/>
+                  <Component id="leaderBoardBtn" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -55,7 +56,9 @@
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="leaderboardBtn" min="-2" max="-2" attributes="0"/>
+                      <Component id="leaderBoardBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="playedGamesBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="newGameBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -80,12 +83,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playerScoreBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="leaderboardBtn">
+    <Component class="javax.swing.JButton" name="playedGamesBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Leaderboard"/>
+        <Property name="text" type="java.lang.String" value="Played Games"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leaderboardBtnActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playedGamesBtnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="newGameBtn">
@@ -156,6 +159,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="         ."/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="leaderBoardBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Leaderboard"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leaderBoardBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
