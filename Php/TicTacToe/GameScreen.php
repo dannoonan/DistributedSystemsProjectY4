@@ -40,6 +40,11 @@ if (isset($_POST['board'])) {
     if ($boardString === "ERROR-NOMOVES") {
         echo $boardString;
     }
+    else{
+        $allMoves = explode("\n", $boardString);
+        $movesNumber = sizeof($allMoves);
+        echo $movesNumber;
+    }
 
     exit;
 }
@@ -68,8 +73,8 @@ if (isset($_POST['playMove'])) {
                 $x = 1;
                 $y = $val;
             }
-            $xml_array["x"] = $x;
-            $xml_array["y"] = $y;
+            $xml_array["x"] = $x-1;
+            $xml_array["y"] = $y-1;
             $xml_array["gid"] = $_SESSION['GameId'];
 
             $result = $client->checksquare($xml_array);
@@ -109,18 +114,18 @@ if (isset($_POST['wait'])) {
         } else {
             foreach ($allMoves as $singleMove) {
                 $split = explode(",", $singleMove);
-                if ($split[1] == 1) {
+                if ($split[1] == 0) {
                     $arr = $split[2];
-                } else if ($split[1] == 2) {
+                } else if ($split[1] == 1) {
                     $arr = 3 + $split[2];
                 } else {
                     $arr = 6 + $split[2];
                 }
-                if ($_SESSION['moves'][$arr - 1] === 0) {
+                if ($_SESSION['moves'][$arr] === 0) {
                     if ($split[0] != $_SESSION['UserId']) {
                         $_SESSION['movesMade'] ++;
-                        $_SESSION['moves'][$arr - 1] = 2;
-                        echo $arr;
+                        $_SESSION['moves'][$arr] = 2;
+                        echo $arr+1;
                     }
                 }
             }
@@ -136,11 +141,11 @@ if (isset($_POST['win'])) {
     catch (SoapFault $e){
     print_r($client);
     // or other error handling
-}
+    }   
     $w = $response->return;
     if ($w === 0) {
         echo $w;
-    } else {
+    } else if($w == 1 OR $w == 2 OR $w == 3) {
         $xml_array["gstate"] = $w;
         $response = $client->setGameState($xml_array);
         echo $w;
@@ -185,8 +190,6 @@ if (isset($_POST['win'])) {
                             $response = $client->newGame($xml_array);
                             $_SESSION['GameId'] = $response->return;
                             $_SESSION['Pid'] = 1;
-                            echo "Finding player 2";
-                            echo $_SESSION['GameId'];
                         } else {
                             $_SESSION['GameId'] = $GameDetails[0];
                             $xml_array["gid"] = $_SESSION['GameId'];
@@ -197,7 +200,8 @@ if (isset($_POST['win'])) {
                         }
                         ?>
 
-                        <div class="board">
+                        <div class="11u 12u(mobile)">
+                            <h1>Play by pressing a tile on the game <br><br><br> board below</h1>
                             <button type="button" value="-" id="1" onclick="playMove(1);">-</button>
                             <button type="button" value="-" id="2" onclick="playMove(2);">-</button>
                             <button type="button" value="-" id="3" onclick="playMove(3);">-</button>
@@ -222,11 +226,13 @@ if (isset($_POST['win'])) {
                                     setTimeout(function () {
                                         poll();
                                     }, 3000);
+                                    alert("Please wait while a Second Player Joins!");
                                 });
 
                                 function poll() {
                                     var polling = true;
                                     var interval = false;
+                                    
                                     $.ajax({
                                         type: 'POST',
                                         data: {poll: 1},
@@ -286,7 +292,7 @@ if (isset($_POST['win'])) {
                                         success: function (response) {
                                             if (response == 0)
                                             {
-                                                myGo();
+                                                getBoard(0);
                                             } else if (response == 3) {
                                                 alert("Draw Game");
                                             } else {
@@ -296,7 +302,7 @@ if (isset($_POST['win'])) {
                                     });
                                 }
 
-                                function getBoard() {
+                                function getBoard($in) {
                                     $.ajax({
                                         type: 'POST',
                                         data: {board: 1},
@@ -306,7 +312,42 @@ if (isset($_POST['win'])) {
                                             {
                                                 myGo();
                                             } else {
-                                                alert(result);
+                                                if(response > 4){
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    data: {win: 1},
+                                                    success: function (response) {
+                                                        $val = response;
+                                                        if (response == 0)
+                                                        {
+                                                            if($in == 0){
+                                                                wait();
+                                                            }
+                                                            else{
+                                                                myGo();
+                                                            }
+                                                            
+                                                        } else if (response == 3) {
+                                                            alert("Draw Game");
+                                                        }
+                                                        else if(response == 1){
+                                                            alert("Game Over, Player 1 Won!");
+                                                        }
+                                                        else if(response == 2){
+                                                            alert("Game Over, Player 2 Won!");
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                            else
+                                            {
+                                                if($in == 0){
+                                                                wait();
+                                                            }
+                                                            else{
+                                                                myGo();
+                                                            }
+                                            }
                                             }
                                         }
                                     });
@@ -341,24 +382,9 @@ if (isset($_POST['win'])) {
                                             {
                                                 document.getElementById($val).innerHTML="X";
                                                 alert('Move Inserted');
-                                                wait();
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    data: {win: 1},
-                                                    success: function (response) {
-                                                        $val = response;
-                                                        if (response == 0)
-                                                        {
-                                                            wait();
-                                                        } else if (response == 3) {
-                                                            alert("Draw Game");
-                                                        }
-                                                        else{
-                                                            alert("Game Over, Player " + $val + " Won!");
-                                                        }
-                                                    }
-                                                });
+                                                getBoard(0);
                                             }
+                                            
                                         }
                                     });
                                 }
@@ -375,7 +401,8 @@ if (isset($_POST['win'])) {
                                                 document.getElementById($val).innerHTML="O";
                                                 waiting = false;
                                                 clearInterval(pollingTm);
-                                                checkGame();
+                                                myGo();
+                                                //getBoard(1);
                                                 /* $.ajax({
                                                  type: 'POST',
                                                  data: {win: 1},
@@ -402,33 +429,10 @@ if (isset($_POST['win'])) {
                                         }
                                     });
                                 }
-                                function checkWin() {
-                                    $.ajax({
-                                        type: 'POST',
-                                        data: {win: 1},
-                                        success: function (response) {
-                                            alert(response);
-                                            return 0;
-                                        }
-                                    });
-                                }
-                                function whoGo() {
-                                    $.ajax({
-                                        type: 'POST',
-                                        data: {whoGo: 1},
-                                        success: function (response) {
-                                            if (response == 0)
-                                            {
-                                                wait();
-                                            } else {
-                                                alert("You can now make another move");
-                                            }
-                                        }
-                                    });
-                                }
             </script>
 
             <!-- Work -->
+           /*
             <?php
 
             function waitForP2() {
@@ -454,6 +458,7 @@ if (isset($_POST['win'])) {
                 echo "Game Started";
             }
             ?>
+           
 
 
 

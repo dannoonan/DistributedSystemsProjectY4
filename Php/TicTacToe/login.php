@@ -51,6 +51,8 @@
 				echo (string) $response->return;*/
 				$xml_array["username"] = $user;
 				$xml_array["password"] = $pass;
+                                
+                                
 				
 				$response = $client->login($xml_array);
 				$userid = $response->return;
@@ -68,6 +70,7 @@
                                             $userDAO = new UserDAO();
                                             $user= $userDAO->setUser($userid);
                                             $_SESSION["UserId"] = $user->getUserId();
+                                            $_SESSION["Username"] = $xml_array["username"];
                                             echo  $_SESSION["UserId"];
                                             header("Location:./index.php?");
                                             /*

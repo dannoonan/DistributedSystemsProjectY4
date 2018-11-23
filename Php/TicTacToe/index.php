@@ -9,8 +9,6 @@ if (!isset($_SESSION)) {
 
     session_set_cookie_params(0);
     session_start();
-
-    echo $_SESSION["UserId"];
 }
 if (!isset($_SESSION["UserId"])) {
     header("Location:./login.php");
@@ -93,13 +91,14 @@ if (!isset($_SESSION["UserId"])) {
                             <h3>Or select an open game below to join:</h3>
 
                             <br>
-                            <?php
+                            <h3> <?php
                             foreach ($OpenGames as $result) {
-
-                                echo '<a href="./GameScreen.php?GameID=' . $result . '">' . $result . '</a>';
+                                
+                                $split = explode(",", $result);
+                                echo '<a href="./GameScreen.php?GameID=' . $result . '">' .'Game '. $split[0].': Started by '. $split[1] . '</a>';
                                 echo '<br>';
                             }
-                            ?>
+                            ?></h3>
 
                         </div>
                     </div>

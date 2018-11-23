@@ -19,7 +19,7 @@ class User{
 	function getEmail() { return $this->Email; }
 	function setPassword($Password) { $this->Password = $Password; }
 	function getPassword() { return $this->Password; }
-	function setUsername($Reputation) { $this->Username = $Reputation; }
+	function setUsername($Username) { $this->Username = $Username; }
 	function getUsername() { return $this->Username; }
 	
 }
