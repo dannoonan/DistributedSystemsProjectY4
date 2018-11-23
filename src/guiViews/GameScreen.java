@@ -97,7 +97,8 @@ public class GameScreen extends javax.swing.JFrame {
     }
     
     public void waitTurn(){  
-        game.pollDb();
+       game.pollDb();
+       game.checkWin();
        if(game.waitForTurn()==1){
           if(!game.getWinner().equals("")) {
                announceLbl.setText(game.getWinner()+ " wins");
@@ -625,6 +626,7 @@ public class GameScreen extends javax.swing.JFrame {
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
+        //game.pollDb();
         setBoardView();
         game.checkWin();
     }//GEN-LAST:event_updateBtnActionPerformed

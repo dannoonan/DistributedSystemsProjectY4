@@ -47,7 +47,7 @@ public class leaderboardScreen extends javax.swing.JFrame {
             Vector row = new Vector();
             row.add(players[i]);
             
-             for(int j=0; j<scores.length; j++){
+             for(int j=0; j<scores[i].length; j++){
                  
                  row.add(Integer.toString(scores[i][j]));
              }
@@ -57,7 +57,6 @@ public class leaderboardScreen extends javax.swing.JFrame {
    
     
     public int[][] getPlayerScores(String [] players){
-        //players = getPlayers();
         int [][] scores = new int[players.length][3];
         
        
@@ -119,8 +118,7 @@ public class leaderboardScreen extends javax.swing.JFrame {
     public String[] getPlayers(){
         String [] players;
         ArrayList<String> playerList = new ArrayList<>();;
-        
-        
+  
         String games = gameDao.getLeagueTable();
         String [] gamesArr = games.split("\\s*\n\\s*");
         String [] gameDetails;
@@ -128,26 +126,21 @@ public class leaderboardScreen extends javax.swing.JFrame {
         
          for(int i=0; i<gamesArr.length; i++){
             gameDetails = gamesArr[i].split("\\s*,\\s*");
-            for(int j=1;j<4;j++){
-                for(int k=0; k<playerList.size(); k++){
+            for(int j=1;j<3;j++){
+                alreadyInList = false;
+                for(int k=0; k<playerList.size(); k++){                  
                     if(gameDetails[j].equals(playerList.get(k))){
                         alreadyInList = true;   
                     }
                 }
-                 if(alreadyInList==false){
+                if(alreadyInList==false){
                      playerList.add(gameDetails[j]);
-                 }   
-                
-            }
-            
+                     System.out.println("ADDED " +gameDetails[j]);
+                }      
+            }          
          }
          players = new String[playerList.size()];
-         players = (String[]) playerList.toArray(players);
-         
-         for(int i=0; i<players.length;i++){
-             System.out.println(players[i]);
-             System.out.println("ll");
-         }
+         players = (String[]) playerList.toArray(players);         
          
          return players;
     }

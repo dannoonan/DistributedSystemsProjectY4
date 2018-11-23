@@ -200,7 +200,7 @@ public class MenuScreen extends javax.swing.JFrame {
         Game game = new Game(userId, gameIdInt, 1);
         GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);      
         gameScreen.setVisible(true);
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_newGameBtnActionPerformed
 
     private void joinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinBtnActionPerformed
@@ -221,7 +221,7 @@ public class MenuScreen extends javax.swing.JFrame {
                 Game game = new Game(userId, gameIdInt, 2);
                 GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);
                 gameScreen.setVisible(true);
-                this.dispose();
+                //this.dispose();
             }else if(resultInt == 0){
                 warnLbl.setText("ERROR");
             }else{
