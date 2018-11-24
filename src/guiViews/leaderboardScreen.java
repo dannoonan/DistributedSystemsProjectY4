@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author windows
  */
-public class leaderboardScreen extends javax.swing.JFrame {
+public class LeaderboardScreen extends javax.swing.JFrame {
     
     
     GameDao gameDao = new GameDao();
@@ -27,7 +27,7 @@ public class leaderboardScreen extends javax.swing.JFrame {
     /**
      * Creates new form leaderboardScreen
      */
-    public leaderboardScreen(int userId, String username) {
+    public LeaderboardScreen(int userId, String username) {
         this.userId = userId;
         this.username = username;
         
@@ -256,20 +256,21 @@ public class leaderboardScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(leaderboardScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LeaderboardScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(leaderboardScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LeaderboardScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(leaderboardScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LeaderboardScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(leaderboardScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LeaderboardScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new leaderboardScreen(userId, username).setVisible(true);
+                new LeaderboardScreen(userId, username).setVisible(true);
             }
         });
     }

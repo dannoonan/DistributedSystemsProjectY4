@@ -5,6 +5,7 @@
  */
 package guiViews;
 
+import controllers.GameController;
 import daos.GameDao;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
@@ -198,7 +199,8 @@ public class MenuScreen extends javax.swing.JFrame {
        int gameIdInt = Integer.parseInt(gameIdStr);
         displayGames();
         Game game = new Game(userId, gameIdInt, 1);
-        GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);      
+        GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);  
+        GameController gameController = new GameController(game, gameScreen);
         gameScreen.setVisible(true);
         //this.dispose();
     }//GEN-LAST:event_newGameBtnActionPerformed
@@ -218,8 +220,10 @@ public class MenuScreen extends javax.swing.JFrame {
             int resultInt = Integer.parseInt(resultStr);
             
             if(resultInt ==1){
+               
                 Game game = new Game(userId, gameIdInt, 2);
                 GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);
+                GameController gameController = new GameController(game, gameScreen);
                 gameScreen.setVisible(true);
                 //this.dispose();
             }else if(resultInt == 0){
@@ -252,7 +256,7 @@ public class MenuScreen extends javax.swing.JFrame {
 
     private void leaderBoardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaderBoardBtnActionPerformed
         // TODO add your handling code here:
-        leaderboardScreen leaderboardScores = new leaderboardScreen(userId, username);
+        LeaderboardScreen leaderboardScores = new LeaderboardScreen(userId, username);
         leaderboardScores.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_leaderBoardBtnActionPerformed

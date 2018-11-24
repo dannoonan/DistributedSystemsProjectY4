@@ -81,13 +81,16 @@ public class GameDao {
   public String getBoard(){
       //API IS WRONG HERE. BELOW PID AND GID IN RIGHT SPOTS
       String retString = proxy.getBoard(this.gameId);
-      
+      //System.out.print("gID is : "+this.gameId);
+      //System.out.print("retString is : "+retString);
       return retString;
   }
   public String checkWin(){
-      //API IS WRONG HERE. BELOW PID AND GID IN RIGHT SPOTS
-      String retString = proxy.checkWin(this.gameId);
       
+      String retString = proxy.checkWin(this.gameId);
+      if(retString.equals("ERROR-NOMOVES")){
+          retString="0";
+      }
       return retString;
   }
   public String showAllMyGames(){
