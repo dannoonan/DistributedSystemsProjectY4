@@ -28,7 +28,12 @@ public class GameController {
     }
     
     
-    
+    /**
+     * Takes a string corresponding to the coordinates of a button pressed in the 
+     * gameScreen. Depending on the string passed in, two int values specifying the coordinates
+     * are passed to a method that specifies the action to be taken
+     * @param buttonName 
+     */
     public void buttonPressed(String buttonName){
          switch(buttonName){
              case "00":
@@ -61,13 +66,19 @@ public class GameController {
                  
          }
     }
-    
+    /**
+     * 
+     * @param x
+     * @param y 
+     */
     public void buttonAction(int x, int y){
         //pollDb();
-        if(game.getGameOver()==false){
+        //If the game isn't over, and the game has started, respond to input from buttons
+        if(game.getGameOver()==false&&game.getGameInProgress()==true){
             String result = gameDao.checkSquare(x, y, game.getGameId());
             System.out.println("result is: "+result);
             System.out.println("turnPlauable is "+game.getTurnPlayable());
+            //If it is the player's turn, allow the player to make a move
             if(game.getTurnPlayable()){
                if("0".equals(result)){
                     result = gameDao.takeSquare(x, y, game.getUserId(), game.getGameId());
@@ -86,10 +97,16 @@ public class GameController {
             } 
         }
     }
-    
+   /**
+    *Updates the board using the most recent board configuration pulled by the gameDao from
+    * the API. The string sent back from the DAO is split, the player who made each move
+    * is ascertained, and the appropriate symbol is placed in each part of the board
+    * according to the moves
+    */ 
     public void setBoardView(){
         //pollDb();
-        if(game.getGameOver()==false){
+        gameScreen.setWarnLabel(".");
+        if(game.getGameOver()==false&&game.getGameInProgress()==true){
             if(!game.getBoard().equals("ERROR-NOMOVES")){
                 String[] moves = gameDao.getBoard().split("\\s*\n\\s*");
                 for(int i=0; i<moves.length;i++){
@@ -97,16 +114,17 @@ public class GameController {
                     int playerId = Integer.parseInt(movesDetails[0]);
                     String x = movesDetails[1];
                     String y = movesDetails[2];
+                    //tempSymbol will correspond to the symbol of whichever player made the move
                     String tempSymbol = "";
 
-                     if(playerId==game.getUserId()){
-                         tempSymbol=game.getPlayerSymbol();
-                     }else{
-                         tempSymbol=game.getOpponentSymbol();
-                     }
-
+                    if(playerId==game.getUserId()){
+                        tempSymbol=game.getPlayerSymbol();
+                    }else{
+                        tempSymbol=game.getOpponentSymbol();
+                    }
+                    //
                     if(x.equals("0")&&y.equals("0")){
-                        System.out.println("setting view to "+ tempSymbol);
+                        
                         gameScreen.setBoardLabels(0,0, tempSymbol);
 
                     }else if(x.equals("0")&&y.equals("1")){
@@ -138,19 +156,41 @@ public class GameController {
             }
         }
     }
+    /**
+     * Mehtod called by the gameScreen when the update button is pressed. Method checks
+     * that the game is running,  calls the method that polls the database to make sure that the game's board is
+     * up to date, and calls the method to set the board view. The checkWin method is called next, to check 
+     * if either player has won. If so the winner is declared on the gameScreen, and the game is no longer
+     * playable
+     */
     public void updateBoardView(){
-        pollDb();
-        setBoardView();
-        if(!game.getBoard().equals("ERROR-NOMOVES")){
-            checkWin();
-            if(game.getGameOver()==true){
-                game.setTurnPlayable(false);
-                announceWinner();
+        if(game.getGameInProgress()==true){
+            pollDb();
+            setBoardView();
+            if(!game.getBoard().equals("ERROR-NOMOVES")){
+                checkWin();
+                if(game.getGameOver()==true){
+                    game.setTurnPlayable(false);
+                    announceWinner();
+                }
             }
         }
-        
     }
-    
+    /**
+     * Calls the method in the Game class, which uses the GameDao to
+     * poll the database until there is a change that indicates the second
+     * player has joined the game
+     */
+    public void gameStarted(){
+        //gameScreen.setAnnounceLabel("Waiting for game to start");
+        game.gameStarted();
+        //gameScreen.setAnnounceLabel(".");
+        //gameScreen.setVisible(true);
+    }
+    /**
+     * Creates a thread to check the database to see
+     * if the turn is the player's or opponent's
+     */
     public void pollDb(){
        GameThread pollThread; 
        
@@ -165,7 +205,11 @@ public class GameController {
         }
         
    }
-    
+    /**
+     * Checks if game is won. If it is, then the 
+     * waitForTurn method called next will return a value
+     * indicating this is the case. The winner is then announced
+     */
     public void waitTurn(){  
        checkWin();
        if(waitForTurn()==1){
@@ -173,7 +217,11 @@ public class GameController {
           
        }
     }
-    
+   /**
+    * Retrieves the name of the winner - or the fact of a draw - as
+    * a string, then calls a method in gameScreen to announce the winner
+    * on the announceLabel
+    */ 
     public void announceWinner(){
         if(!game.getWinner().equals("Draw")) {
                gameScreen.setAnnounceLabel(game.getWinner()+ " wins");
@@ -201,7 +249,12 @@ public class GameController {
        System.out.println("in method waitforturn");
        return 0;
    }
-    
+    /**
+     * Uses the game DAO to check if the game has been won.
+     * If so, the method sets the winner String in game,
+     * sets the gameOver boolean in game to true, and 
+     * tells the DAO to update the database accordingly.
+     */
     public void checkWin(){
        String resultString = gameDao.checkWin();
        

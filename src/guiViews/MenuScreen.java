@@ -199,7 +199,7 @@ public class MenuScreen extends javax.swing.JFrame {
        int gameIdInt = Integer.parseInt(gameIdStr);
         displayGames();
         Game game = new Game(userId, gameIdInt, 1);
-        GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);  
+        GameScreen gameScreen = new GameScreen(userId, gameIdInt);  
         GameController gameController = new GameController(game, gameScreen);
         gameScreen.setVisible(true);
         //this.dispose();
@@ -222,8 +222,8 @@ public class MenuScreen extends javax.swing.JFrame {
             if(resultInt ==1){
                
                 Game game = new Game(userId, gameIdInt, 2);
-                GameScreen gameScreen = new GameScreen(userId, gameIdInt, game);
-                GameController gameController = new GameController(game, gameScreen);
+                GameScreen gameScreen = new GameScreen(userId, gameIdInt);
+                GameController gameController = new GameController(game, gameScreen);             
                 gameScreen.setVisible(true);
                 //this.dispose();
             }else if(resultInt == 0){

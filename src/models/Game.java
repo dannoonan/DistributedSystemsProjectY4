@@ -34,12 +34,11 @@ public class Game  {
        this.userId = uid;
        this.gameId = gid;
        this.playerNum = playerNum;
-       gameInProgress = true;
+       gameInProgress = false;
        turnPlayable = false;
        if(playerNum==1){
             turnPlayable = true;
-       }
-       
+       }       
        if(playerNum==1){
            playerSymbol ="__X__";
            opponentSymbol = "__O__";
@@ -52,10 +51,10 @@ public class Game  {
        this.game = this;
        gameOver = false;
        winner = "";
-       //System.out.println("in game constructor");
-       //System.out.println("turnplayable =="+turnPlayable);     
-       //pollDb();
-    
+   }
+   
+   public void setSymbols(){
+       
    }
    
    public int getGameId(){
@@ -165,23 +164,25 @@ public class Game  {
        return 0;
    }
  
-   public boolean gameStarted(){
-       boolean retBool =false;
+   public void gameStarted(){
+       boolean startedSwitch =false;
        
        if(playerNum ==2){
-           retBool = true;
+           startedSwitch = true;
+           setGameInProgress(true);
        }
         //System.out.println("in gamestart function");
-       while(retBool == false){ 
+       while(startedSwitch == false){ 
             if(gameDao.getGameState().equals("-1")){
-                retBool =false;
+                startedSwitch =false;
+                setGameInProgress(false);
                 //System.out.println("in gamestart function -- false");
             }else if(gameDao.getGameState().equals("0")){
-                retBool =true;
+                startedSwitch =true;
+                setGameInProgress(true);
                 //System.out.println("in gamestart function ---true");
             }
        }
-       return retBool;
    }
    
    

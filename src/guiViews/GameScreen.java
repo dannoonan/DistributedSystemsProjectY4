@@ -19,7 +19,7 @@ public class GameScreen extends javax.swing.JFrame {
     static int gameId;
     GameController gameController;
     static GameDao gameDao;
-    static Game game;
+    //static Game game;
     boolean gameStarted;
    
     
@@ -27,18 +27,19 @@ public class GameScreen extends javax.swing.JFrame {
     /**
      * Creates new form GameScreen
      */
-    public GameScreen(int userId, int gameId, Game game) {
+    public GameScreen(int userId, int gameId) {
         this.userId = userId;
         this.gameId = gameId;        
-        this.game = game;   
-        this.gameDao = new GameDao(game.getUserId(),game.getGameId());
+        //this.game = game;   
+        //this.gameDao = new GameDao(game.getUserId(),game.getGameId());
         initComponents();
-        game.gameStarted();
+        
         
     }
     
     public void AddListener(GameController gameController){
         this.gameController = gameController;
+         gameController.gameStarted();
     }
 
     /**
@@ -355,12 +356,9 @@ public class GameScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_pos20BtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
-        // TODO add your handling code here:
-        //game.pollDb();
-        
-       // gameController.setBoardView();
+
         gameController.updateBoardView();
-        game.checkWin();
+       // game.checkWin();
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void getStateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getStateBtnActionPerformed
@@ -428,7 +426,7 @@ public class GameScreen extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
               
-                new GameScreen(userId, gameId, game).setVisible(true);
+                new GameScreen(userId, gameId).setVisible(true);
                 
             }
         });
