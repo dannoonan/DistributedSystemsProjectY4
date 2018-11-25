@@ -29,76 +29,51 @@ public class GameThread extends Thread {
     
     @Override
     public void run() {
-       synchronized(gameDao){
-          /* while(game.getTurnPlayable()&&t.getName().equals("PlayThread")){
-               try{
-                    String boardState1 = game.getBoard();
-                    String boardState2 = gameDao.getBoard();
-                     System.out.println(game.getTurnPlayable());
-
-                    if(boardState1.equals(boardState2)){
-                      boardState2 = gameDao.getBoard();
-                      System.out.println("Here i am in thread PLAY");
-                      game.setTurnPlayable(true);
-                      sleep(1000);
-
-                     }
-                    if(!boardState1.equals(boardState2)){
-                        System.out.println("Here i am in thread PLAY NATHN HAPPENING");
-                        game.setBoard();
-                        game.setTurnPlayable(false);
-                        
-                    }
-                    
-                    
-                    
-           }catch(Exception e){
-                   System.out.println(e.toString());
-           } 
-           
-       }*/
-          while(true){
-           //while(!game.getTurnPlayable()&&t.getName().equals("PollThread")){
+        synchronized(gameDao){         
                try{
                 String boardState1 = game.getBoard();
+                //String boardState2 = gameDao.getBoard();
                 String boardState2 = gameDao.getBoard();
 
                 System.out.println("one poll");
-                System.out.println(game.getTurnPlayable()+"HERE");
-                System.out.println(boardState1);
-                System.out.println(boardState2);
+                System.out.println(game.getTurnPlayable());
+                System.out.println(boardState1+ " IS  BSTATE 1");
+                System.out.println(boardState2+ " IS  BSTATE 2");
+                
+                if(boardState1.equals(boardState2)){
+                    System.out.println("EQUALS");
+                }
                 
                 if(!game.getTurnPlayable()){
                     if(!boardState1.equals(boardState2)){ 
                         System.out.println("in play true");
                         game.setTurnPlayable(true);
-                        game.setBoard();
-                        sleep(10000);
+                        //game.setBoard();
+                        game.setBoard2(boardState2);
+               
                     }else if(boardState1.equals(boardState2)){
                         System.out.println("in play false");
+                        System.out.println(this.threadName);
                         game.setTurnPlayable(false);
-                        sleep(1000);
+                       
                     }  
                 }else if(game.getTurnPlayable()){
                      if(!boardState1.equals(boardState2)){ 
                         System.out.println("in play set to false");
                         game.setTurnPlayable(false);
-                        game.setBoard();
-                        sleep(1000);
+                        //game.setBoard();
+                        game.setBoard2(boardState2);
+                        System.out.println(game.getBoard()+ " is the changed board");
                     }
                 }else{
-                     sleep(1000);
+                     //sleep(1000);
+                     System.out.println("SHOULDNT GET HERE!");
                  }
                
                }catch(Exception e){
                    System.out.println(e.toString());
-               }
-               
-           }    
-           
-           
-           
-    }
+               }         
+        }
   }
     
     public void start () {

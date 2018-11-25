@@ -53,6 +53,10 @@ public class LoginView extends javax.swing.JFrame {
             }
         });
 
+        usernameTxt.setText("dnoonan");
+
+        passwordTxt.setText("password");
+
         jLabel1.setText("Username");
 
         jLabel2.setText("Password");
@@ -116,6 +120,12 @@ public class LoginView extends javax.swing.JFrame {
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         // TODO add your handling code here:
         
+        if(usernameTxt.getText().length() < 1||passwordTxt.getText().length() < 5){
+            loginLbl.setText("Enter a username and a password longer than 5 chars");
+            return;
+        }
+       
+        
         username = usernameTxt.getText();
         password = passwordTxt.getText();
         
@@ -127,7 +137,7 @@ public class LoginView extends javax.swing.JFrame {
             
         }else {
             System.out.println(result);
-            MenuScreen menu = new MenuScreen(result);
+            MenuScreen menu = new MenuScreen(result, username);
             menu.setVisible(true);
             this.dispose();
         }

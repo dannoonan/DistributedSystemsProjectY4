@@ -17,13 +17,16 @@ public class LeagueScreen extends javax.swing.JFrame {
 
     GameDao gameDao = new GameDao();
     static int userId;
+    static String username;
     
     /**
      * Creates new form RecordsScreen
      */
-    public LeagueScreen(int userId) {
+    public LeagueScreen(int userId, String username) {
         this.userId = userId;
+        this.username = username;
         initComponents();
+        displayGames();
     }
     
     
@@ -31,6 +34,7 @@ public class LeagueScreen extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) leagueTable.getModel();
         model.setRowCount(0);
         String games = gameDao.getLeagueTable();
+        //System.out.println(games);
         String [] gamesArr = games.split("\\s*\n\\s*");
         String [] gameDetails;
         
@@ -39,8 +43,20 @@ public class LeagueScreen extends javax.swing.JFrame {
             
             gameDetails = gamesArr[i].split("\\s*,\\s*");
              for(int j=0; j<gameDetails.length; j++){
+                 if(j==3){
+                     if(gameDetails[j].equals("1")){
+                         row.add(gameDetails[1]);
+                     }else if(gameDetails[j].equals("2")){
+                         row.add(gameDetails[2]);
+                     }else if(gameDetails[j].equals("3")){
+                         row.add("Draw");
+                     }else{
+                         row.add("In Progress");
+                     }
+                 }else{
+                     row.add(gameDetails[j]);
+                 }
                  
-                 row.add(gameDetails[j]);
              }
              model.addRow(row);
         }
@@ -69,7 +85,7 @@ public class LeagueScreen extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Game ID", "P1", "P2", "State", "Date"
+                "Game ID", "P1", "P2", "State/Winner", "Date"
             }
         ) {
             Class[] types = new Class [] {
@@ -109,27 +125,30 @@ public class LeagueScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 72, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(43, 43, 43))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(toMenuBtn)
+                                .addGap(36, 36, 36))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(toMenuBtn)
-                        .addGap(36, 36, 36))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(toMenuBtn)
                 .addContainerGap())
         );
@@ -139,7 +158,7 @@ public class LeagueScreen extends javax.swing.JFrame {
 
     private void toMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toMenuBtnActionPerformed
         // TODO add your handling code here:
-        MenuScreen menu = new MenuScreen(userId);
+        MenuScreen menu = new MenuScreen(userId, username);
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_toMenuBtnActionPerformed
@@ -175,7 +194,7 @@ public class LeagueScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LeagueScreen(userId).setVisible(true);
+                new LeagueScreen(userId, username).setVisible(true);
             }
         });
     }
