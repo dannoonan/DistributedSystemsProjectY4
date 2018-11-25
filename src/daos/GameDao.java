@@ -98,5 +98,10 @@ public class GameDao {
       return retStr;
   }
   
+  public String getGameState(){
+      String retString = proxy.getGameState(this.gameId);
+      
+      return retString;
+  
    
 }
